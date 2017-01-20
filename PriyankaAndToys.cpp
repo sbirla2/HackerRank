@@ -1,33 +1,28 @@
-#include <cmath>
-#include <cstdio>
 #include <vector>
 #include <iostream>
 #include <algorithm>
-using namespace std;
 
-int optimaltoyBuy(std::vector<long int>ToyWeights,long int n){
-  sort(ToyWeights.begin(),ToyWeights.end());
-  long int Purchases=0,j;
-  for (size_t i = 0; i < n; i++) {
-    j=i+1;
-    while (ToyWeights[i]+4 <=ToyWeights[j]) {
-      j++;
-      i=j;
-    }
-    Purchases++;
-  }
-  return Purchases;
-}
 int main() {
-    long int n;
-    std::cin >> n;
+  long int totaltoys;
+  std::cin >> totaltoys;
+  std::vector<long int>toys;
+  for (size_t i = 0; i < totaltoys; i++) {
+    long int toy;
+    std::cin >> toy;
+    toys.push_back(toy);
+  }
+  sort(toys.begin(),toys.end()); // Sorting inscreases the speed of the alogrithm in this contest
 
-    std::vector<long int> Toys;
-    for (size_t i = 0; i < n; i++) {
-      long int toyWeight;
-      std::cin >> toyWeight;
-      Toys.push_back(toyWeight);
+  long int toyPurchase=0;
+    size_t i=0;
+    while (i < totaltoys) {
+    size_t j = i+1; //Optimal toy choice pivot
+    while (toys[j] >= toys[i] && toys[j] <= toys[i]+4) {
+      j++;
     }
-    std::cout << optimaltoyBuy(Toys,n) << std::endl;
+    toyPurchase++;
+    i=j;
+  }
+  std::cout << toyPurchase << '\n';
     return 0;
 }
