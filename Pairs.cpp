@@ -15,7 +15,6 @@ int main() {
     }
     std::sort(Pairs.begin(),Pairs.end());
     long int kcount = 0;
-
      for (std::vector<long long int>::iterator i = Pairs.begin(); i!=Pairs.end(); ++i) {
             for (std::vector<long long int>::iterator j = i; j!=Pairs.end(); ++j) {
               if (*(j)-*(i) == kvalue) {
