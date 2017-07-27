@@ -1,43 +1,50 @@
-#include <vector>
-#include <string>
-#include <iterator>
-#include <algorithm>
+/*
+This Program uses the logic of Storing all the possible substrings and incrementing their count when found.
+*/
 #include <iostream>
+#include <string>
+#include <algorithm>
+#include <map>
 using namespace std;
 
-class Contacts{
-private:
-  std::vector<string>contactList;
-  int querySize,partialCount;
-public:
-  void processContacts(){
-    std::cin >> querySize;
-    for (size_t i = 0; i < querySize; i++) {
-      string opName,inputString;
-      partialCount=0;
-      std::cin >> opName>>inputString;
-      if (opName=="add") {
-        addContacts(inputString);
-      }
-      else if(opName=="find"){
-        std::cout << findPartial(inputString) << '\n';
-      }
+// Map of all Substrings of the input string
+std::map<string, long int> contactsMap;
+
+void addContacts(string contactName){
+  for (size_t i = 1; i <= contactName.size(); i++) {
+    std::string subStr = contactName.substr(0,i);
+    if (contactsMap.find(subStr) != contactsMap.end() ) { // Existing Entry
+      contactsMap[subStr]+=1;
+    }
+    else{
+      contactsMap[subStr]=1; // New Entry
     }
   }
-  void addContacts(string inputString){
-    contactList.push_back(inputString);
+}
+
+long int extractContacts(string contactName){
+  if (contactsMap.find(contactName) != contactsMap.end()) { //Entry Found
+    std::map<string, long int>:: iterator contactsIter  = contactsMap.find(contactName);
+    return contactsIter->second;
   }
-  int findPartial(string inputString){
-    for (std::vector<string>::iterator it=contactList.begin();it!=contactList.end();++it) {
-      if ((*it).find(inputString)!=std::string::npos) {
-        partialCount++;
-      }
-    }
-    return partialCount;
+  else{
+    return 0; // No Entry Found
   }
-};
+}
+
 int main() {
-    Contacts ContObj;
-    ContObj.processContacts();
-   return 0;
+
+  long int querySize;
+  std::cin >> querySize;
+  for (size_t i = 0; i < querySize; i++) {
+    string opName,inputString;
+    std::cin >> opName>>inputString;
+    if (opName=="add") {
+      addContacts(inputString);
+    }
+    else if(opName=="find"){
+    std::cout <<  extractContacts(inputString) << '\n';
+    }
+  }
+    return 0;
 }
